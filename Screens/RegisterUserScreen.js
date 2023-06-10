@@ -104,14 +104,6 @@ const RegisterUserScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Create an Account</Text> */}
-      {/* <Gif
-        source={{
-          uri: "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
-        }}
-        style={{ width: 200, height: 200 }}
-        resizeMode="cover"
-      /> */}
       <Image
         source={gif}
         style={{ width: 400, height: 400 }}
@@ -163,9 +155,6 @@ const RegisterUserScreen = () => {
       >
         <Text style={styles.buttonTexts}>Log in</Text>
       </TouchableOpacity>
-      {/* {requestState == false && (
-        <Text style={styles.errors}> User already exists</Text>
-      )} */}
     </View>
   );
 };
@@ -177,12 +166,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#ffffff",
   },
-  // title: {
-  //   fontSize: 24,
-  //   fontWeight: "bold",
-  //   marginBottom: 10,
-  //   color: "#d35722",
-  // },
   input: {
     width: "80%",
     height: 50,
@@ -213,7 +196,6 @@ const styles = StyleSheet.create({
     marginTop: 9,
   },
   buttons: {
-    // backgroundColor: "#d35722",
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,

@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   Image,
   Button,
-  TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -60,7 +59,6 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Button title="Fetch Recommendations" onPress={handleButtonPress} />; */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {books.map((book) => (
           <View key={book.userId} style={styles.bookContainer}>

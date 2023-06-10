@@ -14,8 +14,6 @@ import { useEffect } from "react";
 const DescriptionInput = ({ route }) => {
   const [description, setDescription] = useState("");
   const [region, setRegion] = useState(null);
-  const [recommendations, setRecommendations] = useState(null);
-  const [requestState, setRequestState] = useState(false);
 
   const handleDescriptionChange = (text) => {
     setDescription(text);
@@ -45,7 +43,6 @@ const DescriptionInput = ({ route }) => {
     } catch (error) {
       console.error(error);
       navigation.navigate("Home");
-      // setRequestState(true);
     }
   };
 

@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBook,
   faHome,
-  faPlusSquare,
   faUser,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
@@ -74,11 +73,6 @@ function TabNavigator() {
         component={BookDetails}
         options={{ headerShown: false }}
       />
-      {/* <Tab.Screen
-        name="AddBook"
-        component={AddBook}
-        options={{ headerShown: false }}
-      /> */}
       <Tab.Screen
         name="UserProfile"
         component={UserProfile}
@@ -99,20 +93,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {/* {showTabs ? (
-          // <Tab.Navigator>
-          //   <Tab.Screen name="HomeScreen" component={HomeScreen} />
-          //   <Tab.Screen name="BookList" component={BookDetails} />
-          //   <Tab.Screen name="AddBook" component={AddBook} />
-          //   <Tab.Screen name="UserProfile" component={UserProfile} />
-          // </Tab.Navigator>
-        ) : ( */}
         <Stack.Navigator>
-          {/* <Stack.Screen
-            name="Authentication"
-            component={Authentication}
-            options={{ headerShown: false }}
-          /> */}
           <Stack.Screen
             name="RegisterUserScreen"
             component={RegisterUserScreen}
@@ -149,7 +130,6 @@ const App = () => {
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
-        {/* )} */}
       </NavigationContainer>
     </Provider>
   );

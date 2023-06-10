@@ -107,12 +107,6 @@ const AddBook = () => {
         value={isbn}
         onChangeText={(text) => setIsbn(text)}
       />
-      {/* <TextInput
-        style={styles.input}
-        placeholder="Location"
-        value={location}
-        onChangeText={(text) => setLocation(text)}
-      /> */}
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>

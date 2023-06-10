@@ -8,12 +8,10 @@ import {
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { GOOGLE_MAPS_APIKEY } from "@env";
-import { useNavigation } from "@react-navigation/native";
 
 const MapScreen = ({ navigation }) => {
   const [address, setAddress] = useState("");
   const [region, setRegion] = useState(null);
-  // const navigation = useNavigation();
 
   const onPressUpdateLocation = async () => {
     try {
