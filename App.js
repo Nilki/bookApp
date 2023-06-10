@@ -1,124 +1,158 @@
-import React, {useState} from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, TouchableOpacity, Text, View, Dimensions, TextInput, Pressable } from 'react-native';
-import styles from './styles';
-import Svg, {Image, Ellipse, ClipPath} from 'react-native-svg';
-import Animated, { useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay } from 'react-native-reanimated';
+import React, { useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faBook,
+  faHome,
+  faPlusSquare,
+  faUser,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 
-export default function App() {
-  const {height, width} = Dimensions.get('window');
-  const imagePosition = useSharedValue(1);
-  const [isRegistering, setIsRegistering] = useState(false);
+import Authentication from "./Screens/Authentication";
+import LocationScreen from "./Screens/LocationScreen";
+import BookDetails from "./Screens/BookDetails";
+import MapScreen from "./Screens/MapScreen";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import AddBook from "./Screens/AddBook";
+import UserProfile from "./Screens/UserProfile";
+import HomeScreen from "./Screens/Home";
+import RegisterUserScreen from "./Screens/RegisterUserScreen";
+import LoginScreen from "./Screens/LoginScreen";
+import DescriptionInput from "./Screens/Description";
 
-  const imageAnimatedStyle = useAnimatedStyle(() => {
-    const interpolation = interpolate(imagePosition.value, [0,1], [-height/2, 0])
-    return{
-      transform: [{translateY: withTiming(interpolation, {duration: 1000})}]
-    };
-  });
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-  const buttonAnimatedStyle = useAnimatedStyle(() => {
-    const interpolation = interpolate(imagePosition.value, [0,1], [250,0])
-    return{
-      opacity: withTiming(imagePosition.value, {duration:500}),
-      transform:[{translateY: withTiming(interpolation, {duration: 1000})}]
-    };
-  });
+const globalScreenOptions = {
+  headerStyle: { backgroundColor: "#a0deb0" },
+  headerTitleStyle: { color: "white", fontWeight: "bold" },
+  headerTintColor: "white",
+  headerTitleAlign: "center",
+};
 
-  const closeButtonContainerStyle = useAnimatedStyle(() => {
-    const interpolation = interpolate(imagePosition.value, [0,1], [180,360])
-      return{
-        opacity: withTiming(imagePosition.value === 1 ? 0:1, {duration:800} ),
-        transform:[{rotate: withTiming(interpolation + "deg", {duration: 1000})}]
-      };
-  });
-
-  const formAnimatedStyle = useAnimatedStyle(() => {
-      return {
-        opacity: 
-          imagePosition.value === 0 
-            ? withDelay(400, withTiming(1, {duration:800})) 
-            : withTiming(0,{duration:300})
-      };
-  });
-
-  // const formButtonAnimatedStyle = useAnimatedStyle(() => {
-
-  // });
-
-  const loginHandler = () => {
-    imagePosition.value = 0
-    if (isRegistering) {
-      setIsRegistering(false);
-    }
-  };
-
-  const registerHandler = () => {
-    imagePosition.value = 0
-    if (!isRegistering) {
-      setIsRegistering(true);
-    }
-  };
-
+function TabNavigator() {
   return (
-    <View style={styles.container}>
-      <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-        <Svg height={height + 100} width={width}>
-          <ClipPath id="clipPathId">
-            <Ellipse cx={width / 2} rx={height} ry={height +100}/>
-          </ClipPath>
-          <Image 
-            href={require('./assets/background.jpg')} 
-            width={width + 100} 
-            height={height  + 100}
-            preserveAspectRatio="xMidYMid slice"
-            clipPath='url(#clipPathId)'
-          />
-        </Svg>
-        <Animated.View style={[styles.closeButtonContainer, closeButtonContainerStyle]}>
-        <TouchableOpacity onPress={() => imagePosition.value = 1}>
-          <Text>X</Text>
-        </TouchableOpacity>
-        </Animated.View>
-      </Animated.View>
-      <View style={styles.buttonContainer}>
-        <Animated.View style={buttonAnimatedStyle}>
-          <Pressable style={styles.button} onPress={loginHandler}>
-            <Text style={styles.buttonText}>LOG IN</Text>
-          </Pressable>
-        </Animated.View>
-        <Animated.View style={buttonAnimatedStyle}>
-          <Pressable style={styles.button} onPress={registerHandler}>
-            <Text style={styles.buttonText}>REGISTER</Text>
-          </Pressable>
-        </Animated.View>
-        <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
-          <TextInput 
-            placeholder="Email" 
-            placeholderTextColor="black"
-            style={styles.textinput}
-          />
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let icon;
+          switch (route.name) {
+            case "HomeScreen":
+              icon = faHome;
+              color = "#3a3838";
+              break;
+            case "BookList":
+              icon = faBook;
+              color = "#3a3838";
 
-          {isRegistering && (
-            <TextInput 
-            placeholder="Full Name" 
-            placeholderTextColor="black"
-            style={styles.textinput}
-            />
-          )}
+              break;
+            case "Find":
+              icon = faSearch;
+              color = "#3a3838";
+              break;
+            case "UserProfile":
+              icon = faUser;
+              color = "#3a3838";
+              break;
+          }
 
-          
-
-          <TextInput 
-            placeholder="Password" 
-            placeholderTextColor="black"
-            style={styles.textinput}
-          />
-          <View style={styles.formButton}>
-            <Text style={styles.buttonText}>{isRegistering ? 'REGISTER': 'LOG IN'}</Text>
-          </View>
-        </Animated.View>
-      </View>
-    </View>
+          return <FontAwesomeIcon icon={icon} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="BookList"
+        component={BookDetails}
+        options={{ headerShown: false }}
+      />
+      {/* <Tab.Screen
+        name="AddBook"
+        component={AddBook}
+        options={{ headerShown: false }}
+      /> */}
+      <Tab.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Find"
+        component={MapScreen}
+        options={{ headerShown: false }}
+      />
+    </Tab.Navigator>
   );
 }
+
+const App = () => {
+  const [showTabs, setShowTabs] = useState(false);
+
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        {/* {showTabs ? (
+          // <Tab.Navigator>
+          //   <Tab.Screen name="HomeScreen" component={HomeScreen} />
+          //   <Tab.Screen name="BookList" component={BookDetails} />
+          //   <Tab.Screen name="AddBook" component={AddBook} />
+          //   <Tab.Screen name="UserProfile" component={UserProfile} />
+          // </Tab.Navigator>
+        ) : ( */}
+        <Stack.Navigator>
+          {/* <Stack.Screen
+            name="Authentication"
+            component={Authentication}
+            options={{ headerShown: false }}
+          /> */}
+          <Stack.Screen
+            name="RegisterUserScreen"
+            component={RegisterUserScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Location"
+            component={LocationScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MapScreen"
+            component={MapScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={TabNavigator}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DescriptionInput"
+            component={DescriptionInput}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AddBook"
+            component={AddBook}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+        {/* )} */}
+      </NavigationContainer>
+    </Provider>
+  );
+};
+
+export default App;
